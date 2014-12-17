@@ -73,6 +73,7 @@ static gboolean _cursor_blink;
 static VteTerminalCursorShape _cursor_shape;
 static GdkColor _cursor_color;
 static gboolean _hide_on_child_exit;
+static gboolean _ignore_delete_event;
 
 static gboolean _toggled;
 
@@ -122,6 +123,7 @@ GdkColor conf_get_cursor_color(void);
 VteTerminalCursorShape conf_get_cursor_shape(void);
 gboolean conf_get_toggled(void);
 gboolean conf_get_hide_on_child_exit(void);
+gboolean conf_ingore_delete_event(void);
 
 Option options[OPTION_COUNT] = {
     {"key", "-k", "KEY", "Shortcut key (eg: f12)."},
@@ -154,7 +156,8 @@ Option options[OPTION_COUNT] = {
     {"cursorBlink", "-ub", "BOOLEAN", "Should the cursor blink? Default: true"},
     {"cursorColor", "-uc", "COLOR", "The color of the cursor. Default: white"},
     {"cursorShape", "-us", "STRING", "Cursor shape, one of [block,ibeam,underline]. Default: block"},
-    {"hideOnChildExit", "-ac", "BOOLEAN", "Autohide terminal on child exit. Default: true"}
+    {"hideOnChildExit", "-ac", "BOOLEAN", "Autohide terminal on child exit. Default: true"},
+    {"ignoreDeleteEvent", "-id", "BOOLEAN", "Ignore GTK delete_event (Alt-F4). Default: false"},
 };
 
 int get_num_stjerm_instances(void)
@@ -368,6 +371,7 @@ void init_default_values(void)
     _cursor_shape = VTE_CURSOR_SHAPE_BLOCK;
     _toggled = FALSE;
     _hide_on_child_exit = TRUE;
+    _ignore_delete_event = FALSE;
 }
 
 void read_value(char *name, char *value)
@@ -490,6 +494,8 @@ void read_value(char *name, char *value)
         }
         else if(!strcmp("hideOnChildExit", name) || !strcmp("-ac", name))
             _hide_on_child_exit = parse_bool_str(value, _hide_on_child_exit);
+        else if(!strcmp("ignoreDeleteEvent", name) || !strcmp("-id", name))
+            _ignore_delete_event = parse_bool_str(value, _ignore_delete_event);
     }
 }
 
@@ -896,4 +902,9 @@ gboolean conf_get_toggled(void)
 gboolean conf_get_hide_on_child_exit(void)
 {
     return _hide_on_child_exit;
+}
+
+gboolean conf_ignore_delete_event(void)
+{
+    return _ignore_delete_event;
 }
