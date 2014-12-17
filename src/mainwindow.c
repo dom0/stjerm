@@ -75,6 +75,7 @@ static void mainwindow_new_tab(GtkWidget *widget, gpointer user_data);
 static void mainwindow_delete_tab(GtkWidget *widget, gpointer user_data);
 static gint mainwindow_copy(GtkWidget *widget, gpointer user_data);
 static gint mainwindow_paste(GtkWidget *widget, gpointer user_data);
+static gint delete_event(GtkWidget *widget, GdkEvent  *event, gpointer data);
 
 static gint mainwindow_tab_at_xy(GtkNotebook *notebook, gint abs_x, gint abs_y);
 static void mainwindow_notebook_clicked(GtkWidget *widget, GdkEventButton *event, gpointer func_data);
@@ -218,6 +219,9 @@ void build_mainwindow(void)
         NULL);
     g_signal_connect(G_OBJECT(mainwindow), "destroy",
         G_CALLBACK(mainwindow_destroy), NULL);
+
+    gtk_signal_connect (GTK_OBJECT (mainwindow), "delete_event",
+        GTK_SIGNAL_FUNC (delete_event), NULL);
 
     g_signal_connect_after(G_OBJECT(tabbar), "button_press_event", 
         G_CALLBACK(mainwindow_notebook_clicked), NULL);
@@ -630,4 +634,9 @@ GtkWidget* mainwindow_get_terminal_at(int index)
     }
     
     return term;
+}
+
+static gint delete_event(GtkWidget *widget, GdkEvent  *event, gpointer data)
+{
+    return(conf_ignore_delete_event());
 }
