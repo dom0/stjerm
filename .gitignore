@@ -16,3 +16,7 @@ src/*.o
 src/stjerm
 src/term.o
 stamp-h1
+debian/stjerm
+compile
+debian/autoreconf.before
+debian/autoreconf.after

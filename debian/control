@@ -1,0 +1,17 @@
+Source: stjerm
+Section: utils
+Priority: extra
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Carol Meertens <mouz@xs4all.nl>
+Build-Depends: debhelper (>= 7.0.50~), dh-autoreconf, pkg-config,
+ libgtk2.0-dev (>= 2.10), libglib2.0-dev (>= 2.10), libvte-dev (>= 0.20)
+Standards-Version: 3.9.3
+Homepage: http://code.google.com/p/stjerm-terminal/
+
+Package: stjerm
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: lightweight terminal emulator
+ Stjerm is a quake-like terminal emulator. Its window is shown and hidden
+ with a key shortcut and can contain multiple tabs. Stjerm is very
+ minimalistic and works well with Compiz window manager.
