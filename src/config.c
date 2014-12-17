@@ -72,6 +72,7 @@ static gboolean _allowreorder;
 static gboolean _cursor_blink;
 static VteTerminalCursorShape _cursor_shape;
 static GdkColor _cursor_color;
+static gboolean _hide_on_child_exit;
 
 static gboolean _toggled;
 
@@ -120,6 +121,7 @@ gboolean conf_get_cursor_blink(void);
 GdkColor conf_get_cursor_color(void);
 VteTerminalCursorShape conf_get_cursor_shape(void);
 gboolean conf_get_toggled(void);
+gboolean conf_get_hide_on_child_exit(void);
 
 Option options[OPTION_COUNT] = {
     {"key", "-k", "KEY", "Shortcut key (eg: f12)."},
@@ -151,7 +153,8 @@ Option options[OPTION_COUNT] = {
     {"colorX", "-cX", "COLOR", "Specify color X of the terminals color palette"},
     {"cursorBlink", "-ub", "BOOLEAN", "Should the cursor blink? Default: true"},
     {"cursorColor", "-uc", "COLOR", "The color of the cursor. Default: white"},
-    {"cursorShape", "-us", "STRING", "Cursor shape, one of [block,ibeam,underline]. Default: block"}
+    {"cursorShape", "-us", "STRING", "Cursor shape, one of [block,ibeam,underline]. Default: block"},
+    {"hideOnChildExit", "-ac", "BOOLEAN", "Autohide terminal on child exit. Default: true"}
 };
 
 int get_num_stjerm_instances(void)
@@ -364,6 +367,7 @@ void init_default_values(void)
     gdk_color_parse("white", &_cursor_color);
     _cursor_shape = VTE_CURSOR_SHAPE_BLOCK;
     _toggled = FALSE;
+    _hide_on_child_exit = TRUE;
 }
 
 void read_value(char *name, char *value)
@@ -484,6 +488,8 @@ void read_value(char *name, char *value)
                 _cursor_shape = VTE_CURSOR_SHAPE_UNDERLINE;
             }
         }
+        else if(!strcmp("hideOnChildExit", name) || !strcmp("-ac", name))
+            _hide_on_child_exit = parse_bool_str(value, _hide_on_child_exit);
     }
 }
 
@@ -887,3 +893,7 @@ gboolean conf_get_toggled(void)
     return _toggled;
 }
 
+gboolean conf_get_hide_on_child_exit(void)
+{
+    return _hide_on_child_exit;
+}
