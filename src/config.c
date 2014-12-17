@@ -522,8 +522,8 @@ void conf_init(void)
     filename = strcat(getpwuid(getuid())->pw_dir, basename);
     
     XrmSetDatabase(dpy, XrmGetFileDatabase(filename));
-    
-    for(i = 0; i < OPTION_COUNT - 1; i++)
+
+    for(i = 0; i < OPTION_COUNT; i++)
     {
         o = options[i];
         
