@@ -20,3 +20,6 @@ debian/stjerm
 compile
 debian/autoreconf.before
 debian/autoreconf.after
+debian/files
+debian/stjerm.debhelper.log
+debian/stjerm.substvars
